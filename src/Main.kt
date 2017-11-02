@@ -38,7 +38,8 @@ val drawables = mapOf<String, String>(
         "背景图xhdpi" to "skin_ask_fragment_bg",
         "大按钮_n" to "skin_user_card_top_bg.9",
         "未登录_n" to "skin_user_login_bg_normal.9",
-        "未登录_p"  to "skin_user_login_bg_pressed.9"
+        "未登录_p"  to "skin_user_login_bg_pressed.9",
+        "底部bar" to "skin_index_tab_drawable"
 )
 
 fun main(args: Array<String>) {
@@ -86,8 +87,9 @@ fun main(args: Array<String>) {
     processAnimIcon(dstFolder, "index_index_more")
 
     println("资源替换完成，准备打包中...")
+    var current = System.currentTimeMillis()
     Runtime.getRuntime().exec("java -jar ./apktool_2.0.3.jar b dst");
-    println("打包完成！")
+    println("打包完成！pkg time = "+(System.currentTimeMillis() - current))
 //    File(dstFolder, "dist").listFiles().forEach {
 //        it.copyTo(File(dstFolder.parentFile, it.name))
 //    }
@@ -117,7 +119,7 @@ fun processAnimIcon(dst: File, key: String) {
         animFiles.forEach {
             tmpContent += """<item android:duration="150" android:drawable="@drawable/${it.nameWithoutExtension}"/>"""+"\n\t\t"
         }
-    } else if (animFiles.size == 2){
+    } else if (animFiles.size == 1){
         tmpContent += """<item android:state_selected="true" android:duration="150" android:drawable="@drawable/${firstAnimName}"/>"""+"\n\t\t"
     } else {
         error("动画仅支持两帧和四帧.... 请检查${key}相关资源")
